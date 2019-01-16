@@ -34,7 +34,7 @@ namespace SmartKitchenApi.Controllers
             mContext.KitchenUpdates.Add(value);
             mContext.SaveChanges();
             return Accepted();
-        }  
+        }
 
         // PUT api/values/5
         [HttpPut("{id}")]
