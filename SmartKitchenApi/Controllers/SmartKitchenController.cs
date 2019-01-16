@@ -3,31 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SmartKitchenApi;
 
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
     public class SmartKitchenController : ControllerBase
     {
+        protected ApplicationDbContext mContext;
         // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        public SmartKitchenController(ApplicationDbContext context)
         {
-            return new string[] { "value1", "value2" };
+            mContext = context;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public IActionResult Get()
         {
-            return "value";
+            return Accepted();
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]SmartKitchenModel value)
         {
-        
+            if (value == null) return StatusCode(404);
+            mContext.Database.EnsureCreated();
+            if (!mContext.KitchenUpdates.Any()) return StatusCode(404);
+            mContext.KitchenUpdates.Add(value);
+            mContext.SaveChanges();
+            return Accepted();
         }  
 
         // PUT api/values/5
