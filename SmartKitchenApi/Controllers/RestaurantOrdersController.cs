@@ -30,7 +30,7 @@ namespace SmartKitchenApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
-            if (value == null) return StatusCode(404);
+            if (value == null) return StatusCode(400);
             try
             {
                 MContext.Database.EnsureCreated();

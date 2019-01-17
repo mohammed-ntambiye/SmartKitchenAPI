@@ -13,7 +13,7 @@ namespace SmartKitchenApi.Controllers
     public class SmartKitchenController : ControllerBase
     {
         protected ApplicationDbContext MContext;
-        // GET api/values
+
         public SmartKitchenController(ApplicationDbContext context)
         {
             MContext = context;
@@ -25,11 +25,11 @@ namespace SmartKitchenApi.Controllers
             return MContext.KitchenUpdates.ToList();
         }
 
-        // POST api/values
+  
         [HttpPost]
         public IActionResult Post([FromBody]SmartKitchenModel value)
         {
-            if (value == null) return StatusCode(404);
+            if (value == null) return StatusCode(400);
             try
             {
                 MContext.Database.EnsureCreated();
@@ -45,17 +45,17 @@ namespace SmartKitchenApi.Controllers
             return Accepted();
         }
 
-        // PUT api/values/5
+
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
+
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
-            if (id ==null) return StatusCode(404);
+            if (id ==null) return StatusCode(400);
             SmartKitchenModel update = new SmartKitchenModel() { OrderId = id };
             try
             {
