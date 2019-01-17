@@ -9,8 +9,11 @@ namespace SmartKitchenApi
     public class SmartKitchenModel
     {
         [Key]
+        [Required] public int Id { get; set; }
+
         [Required] [MaxLength(256)] public string OrderId { get; set; }
-        [Required] [MaxLength(2048)] public string StationId { get; set; }
+
+        [Required] [MaxLength(2048)] public string StationNumber { get; set; }
 
     }
 }

@@ -12,6 +12,11 @@ namespace SmartKitchenApi
     {
         [Key]
         [Required] [MaxLength(256)] public string OrderId { get; set; }
+
         [Required] [MaxLength(2048)] public string TableNumber { get; set; }
+
+        [Required] [MaxLength(2048)] public string MenuItemId { get; set; }
+
+        [Required] [MaxLength(2048)] public string Extras { get; set; }
     }
 }

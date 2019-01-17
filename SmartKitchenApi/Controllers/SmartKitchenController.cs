@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,18 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Post([FromBody]SmartKitchenModel value)
         {
             if (value == null) return StatusCode(404);
-            MContext.Database.EnsureCreated();
-            if (!MContext.KitchenUpdates.Any()) return StatusCode(404);
-            MContext.KitchenUpdates.Add(value);
-            MContext.SaveChanges();
+            try
+            {
+                MContext.Database.EnsureCreated();
+                MContext.KitchenUpdates.Add(value);
+                MContext.SaveChanges();
+            }
+            catch (SqlException exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+
             return Accepted();
         }
 
@@ -46,10 +55,20 @@ namespace SmartKitchenApi.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
+            if (id ==null) return StatusCode(404);
             SmartKitchenModel update = new SmartKitchenModel() { OrderId = id };
-            MContext.KitchenUpdates.Attach(update);
-            MContext.KitchenUpdates.Remove(update);
-            MContext.SaveChanges();
+            try
+            {
+                MContext.KitchenUpdates.Attach(update);
+                MContext.KitchenUpdates.Remove(update);
+                MContext.SaveChanges();
+            }
+            catch (SqlException exception )
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+          
             return Ok();
 
         }

@@ -23,10 +23,6 @@ namespace SmartKitchenApi.Controllers
         [HttpGet]
         public List<RestaurantOrdersModel> Get()
         {
-    
-            MContext.Database.EnsureCreated();
-            MContext.SaveChanges();
-
             return MContext.RestaurantOrders.ToList();
         }
 
@@ -35,11 +31,18 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
             if (value == null) return StatusCode(404);
-           // MContext.Database.Migrate();
-            MContext.Database.EnsureCreated();
-            //if (!MContext.RestaurantOrders.Any()) return StatusCode(404);
-           MContext.RestaurantOrders.Add(value);
-            MContext.SaveChanges();
+            try
+            {
+                MContext.Database.EnsureCreated();
+                MContext.RestaurantOrders.Add(value);
+                MContext.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+            
             return Accepted();
         }
 
@@ -53,10 +56,20 @@ namespace SmartKitchenApi.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
-            RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderId = id };
-            MContext.RestaurantOrders.Attach(update);
-            MContext.RestaurantOrders.Remove(update);
-            MContext.SaveChanges();
+            if (id == null) return StatusCode(400);
+           RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderId = id };
+            try
+            {
+                MContext.RestaurantOrders.Attach(update);
+                MContext.RestaurantOrders.Remove(update);
+                MContext.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+          
             return Ok();
 
         }
