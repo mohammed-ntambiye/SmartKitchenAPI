@@ -37,7 +37,6 @@ namespace SmartKitchenApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
     }
