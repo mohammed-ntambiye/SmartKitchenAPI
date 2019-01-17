@@ -10,7 +10,6 @@ namespace SmartKitchenApi
     {
         [Key]
         [Required] [MaxLength(256)] public string OrderId { get; set; }
-
         [Required] [MaxLength(2048)] public string StationId { get; set; }
 
     }

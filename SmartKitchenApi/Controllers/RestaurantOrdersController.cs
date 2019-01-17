@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SmartKitchenApi;
 using SmartKitchenApi.Models;
@@ -22,6 +23,7 @@ namespace SmartKitchenApi.Controllers
         [HttpGet]
         public List<RestaurantOrdersModel> Get()
         {
+    
             MContext.Database.EnsureCreated();
             MContext.SaveChanges();
 
@@ -33,9 +35,10 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
             if (value == null) return StatusCode(404);
+           // MContext.Database.Migrate();
             MContext.Database.EnsureCreated();
             //if (!MContext.RestaurantOrders.Any()) return StatusCode(404);
-            MContext.RestaurantOrders.Add(value);
+           MContext.RestaurantOrders.Add(value);
             MContext.SaveChanges();
             return Accepted();
         }
@@ -50,7 +53,7 @@ namespace SmartKitchenApi.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
-            RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderNumber = id };
+            RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderId = id };
             MContext.RestaurantOrders.Attach(update);
             MContext.RestaurantOrders.Remove(update);
             MContext.SaveChanges();

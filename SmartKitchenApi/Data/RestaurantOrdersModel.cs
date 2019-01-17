@@ -11,8 +11,7 @@ namespace SmartKitchenApi
     public class RestaurantOrdersModel
     {
         [Key]
-        public string OrderNumber { get; set; }
-        public string TableNumber { get; set; }
-        //public List<Order> Order = new List<Order>();
+        [Required] [MaxLength(256)] public string OrderId { get; set; }
+        [Required] [MaxLength(2048)] public string TableNumber { get; set; }
     }
 }
