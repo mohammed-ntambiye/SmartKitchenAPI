@@ -11,17 +11,17 @@ namespace SmartKitchenApi.Controllers
     [Route("api/[controller]")]
     public class SmartKitchenController : ControllerBase
     {
-        protected ApplicationDbContext mContext;
+        protected ApplicationDbContext MContext;
         // GET api/values
         public SmartKitchenController(ApplicationDbContext context)
         {
-            mContext = context;
+            MContext = context;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public List<SmartKitchenModel> Get()
         {
-            return Accepted();
+            return MContext.KitchenUpdates.ToList();
         }
 
         // POST api/values
@@ -29,10 +29,10 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Post([FromBody]SmartKitchenModel value)
         {
             if (value == null) return StatusCode(404);
-            mContext.Database.EnsureCreated();
-            if (!mContext.KitchenUpdates.Any()) return StatusCode(404);
-            mContext.KitchenUpdates.Add(value);
-            mContext.SaveChanges();
+            MContext.Database.EnsureCreated();
+            if (!MContext.KitchenUpdates.Any()) return StatusCode(404);
+            MContext.KitchenUpdates.Add(value);
+            MContext.SaveChanges();
             return Accepted();
         }
 
@@ -43,9 +43,15 @@ namespace SmartKitchenApi.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public IActionResult Delete([FromBody]string id)
         {
+            SmartKitchenModel update = new SmartKitchenModel() { OrderId = id };
+            MContext.KitchenUpdates.Attach(update);
+            MContext.KitchenUpdates.Remove(update);
+            MContext.SaveChanges();
+            return Ok();
+
         }
     }
 }
