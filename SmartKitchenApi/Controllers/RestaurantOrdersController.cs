@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SmartKitchenApi;
+using SmartKitchenApi.Helpers;
 using SmartKitchenApi.Models;
 
 namespace SmartKitchenApi.Controllers
@@ -14,10 +15,12 @@ namespace SmartKitchenApi.Controllers
     public class RestaurantOrdersController : ControllerBase
     {
         protected ApplicationDbContext MContext;
+        protected IRandomNumberGenerator RandomNumberHelper;
         // GET api/values
-        public RestaurantOrdersController(ApplicationDbContext context)
+        public RestaurantOrdersController(ApplicationDbContext _context, IRandomNumberGenerator _randomNumberGenerator)
         {
-            MContext = context;
+            MContext = _context;
+            RandomNumberHelper = _randomNumberGenerator;
         }
 
         [HttpGet]
@@ -30,7 +33,9 @@ namespace SmartKitchenApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
+            
             if (value == null) return StatusCode(400);
+            value.OrderId= RandomNumberHelper.RandomNumber(1, 1000000).ToString();
             try
             {
                 MContext.Database.EnsureCreated();
@@ -57,7 +62,7 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Delete([FromBody]string id)
         {
             if (id == null) return StatusCode(400);
-           RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderId = id };
+            RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderId = id };
             try
             {
                 MContext.RestaurantOrders.Attach(update);

@@ -8,12 +8,12 @@ namespace SmartKitchenApi
 {
     public class SmartKitchenModel
     {
-        [Key]
-        [Required] public int Id { get; set; }
+        
+        [Key] [Required] public int Id { get; set; }
 
-        [Required] [MaxLength(256)] public string OrderId { get; set; }
+        [Required] [MaxLength(255)] public string OrderId { get; set; }
 
-        [Required] [MaxLength(2048)] public string StationNumber { get; set; }
+        [Required] [MaxLength(20)] public string StationNumber { get; set; }
 
     }
 }

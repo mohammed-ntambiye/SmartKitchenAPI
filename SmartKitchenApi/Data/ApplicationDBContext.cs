@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartKitchenApi.Data;
 
 namespace SmartKitchenApi
 {
@@ -6,6 +7,7 @@ namespace SmartKitchenApi
     {
         public DbSet<RestaurantOrdersModel> RestaurantOrders { get; set; }
         public DbSet<SmartKitchenModel> KitchenUpdates { get; set; }
+        public DbSet<MenuModel> Menu { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {

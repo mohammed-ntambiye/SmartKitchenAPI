@@ -6,38 +6,39 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SmartKitchenApi;
+using SmartKitchenApi.Data;
 using SmartKitchenApi.Helpers;
 
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class SmartKitchenController : ControllerBase
+    public class MenuController : ControllerBase
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
 
-        public SmartKitchenController(ApplicationDbContext _context, IRandomNumberGenerator _randomNumberGenerator)
+        public MenuController(ApplicationDbContext context, IRandomNumberGenerator _randomNumberGenerator)
         {
-            MContext = _context;
+            MContext = context;
             RandomNumberHelper = _randomNumberGenerator;
         }
 
         [HttpGet]
-        public List<SmartKitchenModel> Get()
+        public List<MenuModel> Get()
         {
-            return MContext.KitchenUpdates.ToList();
+            return MContext.Menu.ToList();
         }
 
   
         [HttpPost]
-        public IActionResult Post([FromBody]SmartKitchenModel value)
+        public IActionResult Post([FromBody]MenuModel value)
         {
             if (value == null) return StatusCode(400);
-            value.Id = RandomNumberHelper.RandomNumber(1, 10000000);
+            value.ItemId = RandomNumberHelper.RandomNumber(10, 200000).ToString();
             try
             {
                 MContext.Database.EnsureCreated();
-                MContext.KitchenUpdates.Add(value);
+                MContext.Menu.Add(value);
                 MContext.SaveChanges();
             }
             catch (SqlException exception)
@@ -60,11 +61,11 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Delete([FromBody]string id)
         {
             if (id ==null) return StatusCode(400);
-            SmartKitchenModel update = new SmartKitchenModel() { OrderId = id };
+            MenuModel update = new MenuModel() { ItemId = id };
             try
             {
-                MContext.KitchenUpdates.Attach(update);
-                MContext.KitchenUpdates.Remove(update);
+                MContext.Menu.Attach(update);
+                MContext.Menu.Remove(update);
                 MContext.SaveChanges();
             }
             catch (SqlException exception )
