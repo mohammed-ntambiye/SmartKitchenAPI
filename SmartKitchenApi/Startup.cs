@@ -17,7 +17,6 @@ namespace SmartKitchenApi
 {
     public class Startup
     {
-        private readonly IRandomNumberGenerator _randomNumberGenerator;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
