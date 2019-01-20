@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SmartKitchenApi;
+using SmartKitchenApi.Controllers;
 using SmartKitchenApi.Helpers;
 
 namespace SmartKitchenApi
@@ -29,6 +30,9 @@ namespace SmartKitchenApi
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IRandomNumberGenerator, RandomNumberGenerator>();
+            services.AddScoped<IMenuController, MenuController>();
+            services.AddScoped<IRestaurantController, RestaurantOrdersController>();
+            services.AddScoped<ISmartKitchenController, SmartKitchenController>();
             services.AddMvc();
         }
 

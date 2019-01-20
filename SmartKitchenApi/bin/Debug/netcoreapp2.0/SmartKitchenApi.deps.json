@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "a2803246d8b46618447efaa754bf14932f176e38"
+    "signature": "a81b42b7267623c59c1f381a1efd2a1ae3d71968"
   },
   "compilationOptions": {
     "defines": [
@@ -27,6 +27,7 @@
           "Microsoft.AspNetCore.All": "2.0.9",
           "Microsoft.NET.Test.Sdk": "15.7.0",
           "Microsoft.NETCore.App": "2.0.0",
+          "Moq": "4.5.28",
           "xunit": "2.3.1",
           "xunit.runner.visualstudio": "2.3.1"
         },
@@ -3067,6 +3068,17 @@
         },
         "compile": {
           "ref/netstandard2.0/Microsoft.Win32.Registry.dll": {}
+        }
+      },
+      "Moq/4.5.28": {
+        "runtime": {
+          "lib/net45/Moq.dll": {
+            "assemblyVersion": "4.5.28.0",
+            "fileVersion": "4.5.28.0"
+          }
+        },
+        "compile": {
+          "lib/net45/Moq.dll": {}
         }
       },
       "Newtonsoft.Json/10.0.1": {
@@ -6143,6 +6155,13 @@
       "sha512": "sha512-LJh1PSoqdugrCv7t+k2B919GGdq4PyrntPVlMCMrcz59nsjOstYmtGWSCiFZ3UNpxv2dlsZdcLzJ847uyOlaEA==",
       "path": "microsoft.win32.registry/4.4.0",
       "hashPath": "microsoft.win32.registry.4.4.0.nupkg.sha512"
+    },
+    "Moq/4.5.28": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xrl67AnoaK+mJ/kr+IGuAqntYcjLXTvUGD4M6X9F6QoNmtpFljMp/jb8ImGFDLuNw2D7NQWCvk5Dqc+peKJitw==",
+      "path": "moq/4.5.28",
+      "hashPath": "moq.4.5.28.nupkg.sha512"
     },
     "Newtonsoft.Json/10.0.1": {
       "type": "package",

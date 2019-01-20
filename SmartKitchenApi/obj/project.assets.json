@@ -2941,6 +2941,15 @@
           }
         }
       },
+      "Moq/4.5.28": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Moq.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Moq.dll": {}
+        }
+      },
       "NETStandard.Library/2.0.0": {
         "type": "package",
         "dependencies": {
@@ -8467,6 +8476,19 @@
         "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Moq/4.5.28": {
+      "sha512": "xrl67AnoaK+mJ/kr+IGuAqntYcjLXTvUGD4M6X9F6QoNmtpFljMp/jb8ImGFDLuNw2D7NQWCvk5Dqc+peKJitw==",
+      "type": "package",
+      "path": "moq/4.5.28",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Moq.dll",
+        "lib/net45/Moq.xml",
+        "moq.4.5.28.nupkg.sha512",
+        "moq.nuspec"
       ]
     },
     "NETStandard.Library/2.0.0": {
@@ -14163,6 +14185,7 @@
       "Microsoft.AspNetCore.All >= 2.0.9",
       "Microsoft.NET.Test.Sdk >= 15.7.0",
       "Microsoft.NETCore.App >= 2.0.0",
+      "Moq >= 4.5.28",
       "xunit >= 2.3.1",
       "xunit.runner.visualstudio >= 2.3.1"
     ]
@@ -14221,6 +14244,10 @@
             "version": "[2.0.0, )",
             "autoReferenced": true
           },
+          "Moq": {
+            "target": "Package",
+            "version": "[4.5.28, )"
+          },
           "xunit": {
             "target": "Package",
             "version": "[2.3.1, )"
@@ -14237,5 +14264,17 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Moq 4.5.28' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Moq",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
 }

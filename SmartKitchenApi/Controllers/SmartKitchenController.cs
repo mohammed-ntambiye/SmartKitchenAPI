@@ -11,7 +11,7 @@ using SmartKitchenApi.Helpers;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class SmartKitchenController : ControllerBase
+    public class SmartKitchenController : ControllerBase , ISmartKitchenController
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
@@ -26,6 +26,7 @@ namespace SmartKitchenApi.Controllers
         public List<SmartKitchenModel> Get()
         {
             return MContext.KitchenUpdates.ToList();
+           
         }
 
   

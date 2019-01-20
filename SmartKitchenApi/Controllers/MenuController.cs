@@ -12,7 +12,7 @@ using SmartKitchenApi.Helpers;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class MenuController : ControllerBase
+    public class MenuController : ControllerBase, IMenuController
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;

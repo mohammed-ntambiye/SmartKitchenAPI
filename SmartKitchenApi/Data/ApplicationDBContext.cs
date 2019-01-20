@@ -3,7 +3,7 @@ using SmartKitchenApi.Data;
 
 namespace SmartKitchenApi
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext: DbContext, IApplicationDBContext
     {
         public DbSet<RestaurantOrdersModel> RestaurantOrders { get; set; }
         public DbSet<SmartKitchenModel> KitchenUpdates { get; set; }
@@ -19,5 +19,5 @@ namespace SmartKitchenApi
 
             base.OnModelCreating(modelBuilder);
         }
-    }
+    } 
 }

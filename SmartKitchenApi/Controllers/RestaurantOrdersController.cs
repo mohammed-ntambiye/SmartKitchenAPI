@@ -12,7 +12,7 @@ using SmartKitchenApi.Models;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class RestaurantOrdersController : ControllerBase
+    public class RestaurantOrdersController : ControllerBase, IRestaurantController
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
