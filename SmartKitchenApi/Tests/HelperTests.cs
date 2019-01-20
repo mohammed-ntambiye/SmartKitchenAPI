@@ -17,8 +17,6 @@ namespace SmartKitchenApi.Tests
             _randomNumberGenerator.Setup(m => m.RandomNumber(3, 5)).Returns(5);
         }
 
-
-
         [Fact]
         public void RandomNumberGeneratorShouldReturnCorrectRangeTest()
         {

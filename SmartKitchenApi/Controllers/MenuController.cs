@@ -26,6 +26,7 @@ namespace SmartKitchenApi.Controllers
         [HttpGet]
         public List<MenuModel> Get()
         {
+            var results = MContext.Menu.ToList();
             return MContext.Menu.ToList();
         }
 

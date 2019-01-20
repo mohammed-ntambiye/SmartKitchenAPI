@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SmartKitchenApi;
 using SmartKitchenApi.Helpers;
-using SmartKitchenApi.Models;
 
 namespace SmartKitchenApi.Controllers
 {
