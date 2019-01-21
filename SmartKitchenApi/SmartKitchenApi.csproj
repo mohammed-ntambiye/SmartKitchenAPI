@@ -5,9 +5,6 @@
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Models\SmartKitchenModel.cs" />
-  </ItemGroup>
 
  
   <ItemGroup>
@@ -32,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

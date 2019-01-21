@@ -24,10 +24,10 @@ namespace SmartKitchenApi.Controllers
         }
 
         [HttpGet]
-        public List<MenuModel> Get()
+        public IActionResult Get()
         {
             var results = MContext.Menu.ToList();
-            return MContext.Menu.ToList();
+            return Ok(MContext.Menu.ToList());
         }
 
   
@@ -53,8 +53,9 @@ namespace SmartKitchenApi.Controllers
 
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]string value)
         {
+            throw new NotImplementedException();
         }
 
 

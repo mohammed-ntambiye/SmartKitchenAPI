@@ -11,9 +11,9 @@ namespace SmartKitchenApi.Controllers
     {
         IActionResult Post([FromBody] MenuModel value);
 
-        List<MenuModel> Get();
+        IActionResult Get();
 
-        void Put(int id, [FromBody] string value);
+        IActionResult Put(int id, [FromBody] string value);
 
         IActionResult Delete([FromBody] string id);
 
