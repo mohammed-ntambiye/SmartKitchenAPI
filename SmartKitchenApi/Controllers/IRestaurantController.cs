@@ -8,7 +8,7 @@ namespace SmartKitchenApi.Controllers
 {
     interface IRestaurantController
     {
-        List<RestaurantOrdersModel> Get();
+        IActionResult Get();
 
         IActionResult Post([FromBody] RestaurantOrdersModel value);
 

@@ -23,9 +23,9 @@ namespace SmartKitchenApi.Controllers
         }
 
         [HttpGet]
-        public List<RestaurantOrdersModel> Get()
+        public IActionResult Get()
         {
-            return MContext.RestaurantOrders.ToList();
+            return Ok(MContext.RestaurantOrders.ToList());
         }
 
         // POST api/values
@@ -45,8 +45,7 @@ namespace SmartKitchenApi.Controllers
             {
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
-            }
-            
+            }      
             return Accepted();
         }
 

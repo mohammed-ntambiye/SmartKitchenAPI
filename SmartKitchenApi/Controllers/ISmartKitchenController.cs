@@ -12,7 +12,7 @@ namespace SmartKitchenApi.Controllers
 
         IActionResult Post([FromBody] SmartKitchenModel value);
 
-        void Put(int id, [FromBody] string value);
+        IActionResult Put([FromBody]SmartKitchenModel value);
 
         IActionResult Delete([FromBody] string id);
     }

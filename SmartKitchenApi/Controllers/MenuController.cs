@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SmartKitchenApi;
+using SmartKitchenApi.Models;
 using SmartKitchenApi.Data;
 using SmartKitchenApi.Helpers;
-
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
@@ -26,11 +26,35 @@ namespace SmartKitchenApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var results = MContext.Menu.ToList();
             return Ok(MContext.Menu.ToList());
         }
 
-  
+        [HttpGet("get-ordered-items")]
+        public IActionResult GetOrderedItems()
+        {
+            List<Orders> MenuItem = new List<Orders>();
+            var Items = MContext.RestaurantOrders.ToList();
+            foreach (var value in Items)
+            {
+
+                var Item = MContext.Menu
+                      .Where(b => b.ItemId == value.MenuItemId)
+                      .FirstOrDefault();
+
+                MenuItem.Add(new Orders()
+                {
+                    ItemName = Item.Name,
+                    TableNumber = value.TableNumber,
+                    OrderId = value.OrderId,
+                    Extras = value.Extras,
+                    MenuItemId = value.MenuItemId
+                });
+
+            }
+            return Ok(MenuItem);
+        }
+
+
         [HttpPost]
         public IActionResult Post([FromBody]MenuModel value)
         {
@@ -47,7 +71,6 @@ namespace SmartKitchenApi.Controllers
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }
-
             return Accepted();
         }
 
@@ -62,7 +85,7 @@ namespace SmartKitchenApi.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
-            if (id ==null) return StatusCode(400);
+            if (id == null) return StatusCode(400);
             MenuModel update = new MenuModel() { ItemId = id };
             try
             {
@@ -70,12 +93,12 @@ namespace SmartKitchenApi.Controllers
                 MContext.Menu.Remove(update);
                 MContext.SaveChanges();
             }
-            catch (SqlException exception )
+            catch (SqlException exception)
             {
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }
-          
+
             return Ok();
 
         }

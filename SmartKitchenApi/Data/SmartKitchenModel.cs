@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 namespace SmartKitchenApi
 {
     public class SmartKitchenModel
-    {
-        
-        [Key] [Required] public int Id { get; set; }
-
-        [Required] [MaxLength(255)] public string OrderId { get; set; }
+    {     
+        [Key] [Required] [MaxLength(255)] public string OrderId { get; set; }
 
         [Required] [MaxLength(20)] public string StationNumber { get; set; }
-
     }
 }

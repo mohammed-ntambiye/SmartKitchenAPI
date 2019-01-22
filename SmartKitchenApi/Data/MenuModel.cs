@@ -14,9 +14,10 @@ namespace SmartKitchenApi.Data
 
         [Required] [MaxLength(255)] public string FoodDescription { get; set; }
 
+        [Required] [MaxLength(255)] public string ImageFileName { get; set; }
+
         [Required] [Key] public string ItemId { get; set; }
 
         [Required] public decimal Price { get; set; }
-
     }
 }

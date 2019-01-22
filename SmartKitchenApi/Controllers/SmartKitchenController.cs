@@ -34,7 +34,6 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Post([FromBody]SmartKitchenModel value)
         {
             if (value == null) return StatusCode(400);
-            value.Id = RandomNumberHelper.RandomNumber(1, 10000000);
             try
             {
                 MContext.Database.EnsureCreated();
@@ -51,9 +50,38 @@ namespace SmartKitchenApi.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IActionResult Put([FromBody]SmartKitchenModel value)
         {
+            if (value == null) return StatusCode(400);
+            try
+            {
+                MContext.Database.EnsureCreated();
+                var Update = MContext.KitchenUpdates
+                    .Where(b => b.OrderId == value.OrderId)
+                    .FirstOrDefault();
+
+
+                if (Update == null)
+                {
+                    MContext.KitchenUpdates.Add(value);
+                    MContext.SaveChanges();
+                }
+                else
+                {
+                    Update.StationNumber = value.StationNumber;
+                    MContext.SaveChanges();
+                }
+            }
+            catch (SqlException exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+
+            return Accepted();
+
+
         }
 
 
