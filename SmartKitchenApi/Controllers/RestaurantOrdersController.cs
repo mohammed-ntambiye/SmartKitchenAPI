@@ -32,8 +32,8 @@ namespace SmartKitchenApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
-            
             if (value == null) return StatusCode(400);
+            value.TimeStamp = DateTime.Now;
             value.OrderId= RandomNumberHelper.RandomNumber(1, 1000000).ToString();
             try
             {

@@ -16,6 +16,8 @@ namespace SmartKitchenApi
 
         [Required] [MaxLength(255)] public string MenuItemId { get; set; }
 
+         public DateTime TimeStamp { get; set; }
+
         [Required] [MaxLength(255)] public string Extras { get; set; }
     }
 }

@@ -43,6 +43,7 @@ namespace SmartKitchenApi.Controllers
 
                 MenuItem.Add(new Orders()
                 {
+                    TimeStamp = value.TimeStamp,
                     ItemName = Item.Name,
                     TableNumber = value.TableNumber,
                     OrderId = value.OrderId,
@@ -51,7 +52,8 @@ namespace SmartKitchenApi.Controllers
                 });
 
             }
-            return Ok(MenuItem);
+            List<Orders> SortedList = MenuItem.OrderBy(o => o.TimeStamp).ToList();
+            return Ok(SortedList);
         }
 
 
