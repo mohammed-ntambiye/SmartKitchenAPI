@@ -23,9 +23,9 @@ namespace SmartKitchenApi.Controllers
         }
 
         [HttpGet]
-        public List<SmartKitchenModel> Get()
+        public IActionResult Get()
         {
-            return MContext.KitchenUpdates.ToList();
+            return Ok(MContext.KitchenUpdates.ToList());
            
         }
 

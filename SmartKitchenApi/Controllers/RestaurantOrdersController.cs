@@ -40,6 +40,14 @@ namespace SmartKitchenApi.Controllers
                 MContext.Database.EnsureCreated();
                 MContext.RestaurantOrders.Add(value);
                 MContext.SaveChanges();
+                var orderRecieved = new SmartKitchenModel
+                {
+                    OrderId = value.OrderId,
+                    StationNumber = "Order recieved"
+                };
+                MContext.KitchenUpdates.Add(orderRecieved);
+                MContext.SaveChanges();
+
             }
             catch (Exception exception)
             {
