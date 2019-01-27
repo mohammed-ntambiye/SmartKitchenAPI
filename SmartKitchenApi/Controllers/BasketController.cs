@@ -32,8 +32,8 @@ namespace SmartKitchenApi.Controllers
         }
 
 
-        [HttpGet("get-basket/{owner}")]
-        public IActionResult GetBasket(string owner)
+        [HttpPost("get-basket")]
+        public IActionResult GetBasket([FromBody]string owner)
         {
             if (owner == null) return StatusCode(400);
 

@@ -29,7 +29,7 @@ namespace SmartKitchenApi.Controllers
             return Ok(MContext.Menu.ToList());
         }
 
-        [HttpGet("get-ordered-items")]
+        [HttpPost("get-ordered-items")]
         public IActionResult GetOrderedItems()
         {
             List<Orders> MenuItem = new List<Orders>();
