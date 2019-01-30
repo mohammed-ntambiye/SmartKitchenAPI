@@ -13,13 +13,16 @@ namespace SmartKitchenApi.Models
 
          [MaxLength(255)] public string TableNumber { get; set; }
 
-         [MaxLength(255)] public string MenuItemId { get; set; }
+        [Required] [MaxLength(255)] public List<Items> Items { get; set; }
 
-         public DateTime TimeStamp { get; set; }
+        [Required] [MaxLength(255)] public string BaketId { get; set; }
+
+        [Required] [MaxLength(255)] public string Owner { get; set; }
+
+        public DateTime TimeStamp { get; set; }
 
         [MaxLength(255)] public string Extras { get; set; }
 
-        public string ItemName { get; set; }
 
     }
 }

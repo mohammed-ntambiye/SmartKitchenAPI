@@ -29,29 +29,46 @@ namespace SmartKitchenApi.Controllers
             return Ok(MContext.Menu.ToList());
         }
 
-        [HttpPost("get-ordered-items")]
+        [HttpGet("get-ordered-items")]
         public IActionResult GetOrderedItems()
         {
             List<Orders> MenuItem = new List<Orders>();
+            var listOfMenuItems = new List<Items>();
             var Items = MContext.RestaurantOrders.ToList();
+
             foreach (var value in Items)
             {
+                listOfMenuItems.Clear();
 
-                var Item = MContext.Menu
-                      .Where(b => b.ItemId == value.MenuItemId)
-                      .FirstOrDefault();
+                var basket = MContext.Basket
+                      .Where(b => b.Owner == value.Owner && b.BasketId == value.BasketId).ToList();
+
+                foreach (var basketItem in basket)
+                {
+                    if (value.BasketId == basketItem.BasketId)
+                    {
+                        var item = MContext.Menu.Where(a => a.ItemId == basketItem.ItemId).FirstOrDefault();
+
+                        listOfMenuItems.Add(new Items()
+                        {
+                            ItermId = item.ItemId,
+                            ItemName = item.Name,
+                            Count = basketItem.Quantity                        
+                        });
+                    }
+
+                }
 
                 MenuItem.Add(new Orders()
                 {
                     TimeStamp = value.TimeStamp,
-                    ItemName = Item.Name,
-                    TableNumber = value.TableNumber,
                     OrderId = value.OrderId,
                     Extras = value.Extras,
-                    MenuItemId = value.MenuItemId
+                    Items = new List<Items>( listOfMenuItems),
+                    TableNumber = value.TableNumber   
                 });
-
             }
+
             List<Orders> SortedList = MenuItem.OrderBy(o => o.TimeStamp).ToList();
             return Ok(SortedList);
         }

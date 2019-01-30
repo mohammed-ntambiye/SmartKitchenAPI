@@ -14,10 +14,15 @@ namespace SmartKitchenApi
 
         [Required] [MaxLength(255)] public string TableNumber { get; set; }
 
-        [Required] [MaxLength(255)] public string MenuItemId { get; set; }
+        [Required] [MaxLength(255)] public string BasketId { get; set; }
 
-         public DateTime TimeStamp { get; set; }
+        [Required] [MaxLength(255)] public string Owner { get; set; }
+
+        public DateTime TimeStamp { get; set; }
 
         [Required] [MaxLength(255)] public string Extras { get; set; }
     }
 }
+
+
+
