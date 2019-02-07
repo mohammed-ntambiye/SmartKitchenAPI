@@ -93,16 +93,22 @@ namespace SmartKitchenApi.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody]string id)
+        public IActionResult Delete(string id,string basketId,string user)
         {
             if (id == null) return StatusCode(400);
-            BasketData update = new BasketData() { ItemId = id };
+            var update = new BasketData() { ItemId = id , BasketId = basketId ,Owner = user};
             try
             {
-                MContext.Basket.Attach(update);
-                MContext.Basket.Remove(update);
-                MContext.SaveChanges();
-            }
+                var Item = MContext.Basket
+                    .Where(b => b.Owner == user && b.BasketId == basketId && b.ItemId == id )
+                    .FirstOrDefault();
+
+                if (Item != null)
+                {
+                    MContext.Basket.Remove(Item);
+                    MContext.SaveChanges();
+                }
+            }      
             catch (SqlException exception)
             {
                 Console.WriteLine(exception.ToString());

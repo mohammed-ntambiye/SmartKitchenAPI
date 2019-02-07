@@ -96,12 +96,8 @@ namespace SmartKitchenApi.Controllers
 
         [HttpGet("{get-single-item}")]
         public IActionResult GetSingleItem(string id)
-        {
-            var Item = MContext.Menu
-                     .Where(b => b.ItemId == id)
-                     .FirstOrDefault();
-
-            return Ok(Item);
+        {          
+            return Ok(MContext.Menu.Where(b => b.ItemId == id).FirstOrDefault());
         }
 
 

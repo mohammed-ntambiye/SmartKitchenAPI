@@ -49,7 +49,6 @@ namespace SmartKitchenApi.Controllers
             return Accepted();
         }
 
-
         [HttpPut]
         public IActionResult Put([FromBody]SmartKitchenModel value)
         {
@@ -60,7 +59,6 @@ namespace SmartKitchenApi.Controllers
                 var Update = MContext.KitchenUpdates
                     .Where(b => b.OrderId == value.OrderId)
                     .FirstOrDefault();
-
 
                 if (Update == null)
                 {
@@ -80,10 +78,7 @@ namespace SmartKitchenApi.Controllers
             }
 
             return Accepted();
-
-
         }
-
 
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
@@ -101,9 +96,7 @@ namespace SmartKitchenApi.Controllers
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }
-          
             return Ok();
-
         }
     }
 }
