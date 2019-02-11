@@ -40,8 +40,8 @@ namespace SmartKitchenApi.Controllers
             {
                 listOfMenuItems.Clear();
 
-                var basket = MContext.Basket
-                      .Where(b => b.Owner == value.Owner && b.BasketId == value.BasketId).ToList();
+                var basket = MContext.ConfirmedOrders
+                      .Where(b => b.Owner == value.Owner && b.BasketId == value.BasketId && b.OrderId == value.OrderId).ToList();
 
                 foreach (var basketItem in basket)
                 {
@@ -55,7 +55,9 @@ namespace SmartKitchenApi.Controllers
                             ItermId = item.ItemId,
                             ItemName = item.Name,
                             Count = basketItem.Quantity,
-                            Customise = customeInfo
+                            Customise = customeInfo,
+                            Iscustomisable = item.Customise
+                            
                         });
                     }
 

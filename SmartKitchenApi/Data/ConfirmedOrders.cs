@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmartKitchenApi.Data
 {
-    public class ConfirmedBasket
+    public class ConfirmedOrders
     {
         public int Id { get; set; }
 

@@ -11,5 +11,6 @@ namespace SmartKitchenApi.Models
         public string ItermId { get; set; }
         public int Count { get; set; }
         public CustomiseData Customise { get; set; }
+        public bool Iscustomisable { get; set; }
     }
 }

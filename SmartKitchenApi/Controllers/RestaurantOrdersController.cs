@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SmartKitchenApi;
+using SmartKitchenApi.Data;
 using SmartKitchenApi.Helpers;
 
 namespace SmartKitchenApi.Controllers
@@ -38,6 +39,35 @@ namespace SmartKitchenApi.Controllers
             try
             {
                 MContext.Database.EnsureCreated();
+                var confirmedItems = MContext.Basket.Where(_ => _.BasketId == value.BasketId && _.Owner == value.Owner).ToList();
+
+                foreach (var item in confirmedItems)
+                {
+                    var itemToAdd = new ConfirmedOrders()
+                    {
+                        CustomiseId = item.CustomiseId,
+                        Quantity = item.Quantity,
+                        Owner = item.Owner,
+                        BasketId = item.BasketId,
+                        ItemId = item.ItemId,
+                        OrderId = value.OrderId
+
+                    };
+                    MContext.ConfirmedOrders.Add(itemToAdd);
+                    MContext.SaveChanges();
+
+                    var Item = MContext.Basket
+                        .Where(b => b.Owner == item.Owner  && b.BasketId == item.BasketId && b.ItemId == item.ItemId)
+                        .FirstOrDefault();
+                    if (Item != null)
+                    {
+                        MContext.Basket.Remove(Item);
+                        MContext.SaveChanges();
+                    }
+
+                }
+
+
                 MContext.RestaurantOrders.Add(value);
                 MContext.SaveChanges();
                 var orderRecieved = new SmartKitchenModel
@@ -45,6 +75,7 @@ namespace SmartKitchenApi.Controllers
                     OrderId = value.OrderId,
                     StationNumber = "Order recieved"
                 };
+
                 MContext.KitchenUpdates.Add(orderRecieved);
                 MContext.SaveChanges();
 
@@ -79,7 +110,7 @@ namespace SmartKitchenApi.Controllers
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }
-          
+
             return Ok();
 
         }
