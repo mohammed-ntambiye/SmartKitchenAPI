@@ -73,7 +73,6 @@ namespace SmartKitchenApi.Controllers
             if (value == null) return StatusCode(400);
             try
             {
-                value.Id = 0;
                 MContext.Database.EnsureCreated();
                 MContext.Basket.Add(value);
                 MContext.SaveChanges();

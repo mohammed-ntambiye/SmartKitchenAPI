@@ -48,12 +48,14 @@ namespace SmartKitchenApi.Controllers
                     if (value.BasketId == basketItem.BasketId)
                     {
                         var item = MContext.Menu.Where(a => a.ItemId == basketItem.ItemId).FirstOrDefault();
+                        var customeInfo = MContext.Customise.Where(_ => _.CustomiseId == basketItem.CustomiseId).FirstOrDefault();
 
                         listOfMenuItems.Add(new Items()
                         {
                             ItermId = item.ItemId,
                             ItemName = item.Name,
-                            Count = basketItem.Quantity                        
+                            Count = basketItem.Quantity,
+                            Customise = customeInfo
                         });
                     }
 

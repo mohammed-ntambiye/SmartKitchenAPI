@@ -29,13 +29,12 @@ namespace SmartKitchenApi.Controllers
             return Ok(MContext.RestaurantOrders.ToList());
         }
 
-        // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
             if (value == null) return StatusCode(400);
             value.TimeStamp = DateTime.Now;
-            value.OrderId= RandomNumberHelper.RandomNumber(1, 1000000).ToString();
+            value.OrderId = RandomNumberHelper.RandomNumber(1, 1000000).ToString();
             try
             {
                 MContext.Database.EnsureCreated();
@@ -54,10 +53,9 @@ namespace SmartKitchenApi.Controllers
             {
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
-            }      
+            }
             return Accepted();
         }
-
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)

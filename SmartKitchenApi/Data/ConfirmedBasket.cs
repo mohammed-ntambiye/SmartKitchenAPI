@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmartKitchenApi.Data
 {
-    public class BasketData
+    public class ConfirmedBasket
     {
         public int Id { get; set; }
 
@@ -19,6 +19,6 @@ namespace SmartKitchenApi.Data
 
         public string CustomiseId { get; set; }
 
-
+        public string OrderId { get; set; }
     }
 }

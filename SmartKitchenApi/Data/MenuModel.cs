@@ -19,5 +19,8 @@ namespace SmartKitchenApi.Data
         [Required] [Key] public string ItemId { get; set; }
 
         [Required] public decimal Price { get; set; }
+
+        [Required] public bool Customise { get; set; }
+        
     }
 }

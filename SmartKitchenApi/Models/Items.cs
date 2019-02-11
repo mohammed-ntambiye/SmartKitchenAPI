@@ -10,5 +10,6 @@ namespace SmartKitchenApi.Models
         public string ItemName { get; set; }
         public string ItermId { get; set; }
         public int Count { get; set; }
+        public CustomiseData Customise { get; set; }
     }
 }
