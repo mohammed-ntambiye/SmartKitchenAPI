@@ -47,15 +47,15 @@ namespace SmartKitchenApi.Controllers
                 {
                     if (value.BasketId == basketItem.BasketId)
                     {
-                        var item = MContext.Menu.Where(a => a.ItemId == basketItem.ItemId).FirstOrDefault();
-                        var customeInfo = MContext.Customise.Where(_ => _.CustomiseId == basketItem.CustomiseId).FirstOrDefault();
+                        var item = MContext.Menu.FirstOrDefault(a => a.ItemId == basketItem.ItemId);
+                        var customInfo = MContext.Customise.FirstOrDefault(_ => _.CustomiseId == basketItem.CustomiseId);
 
                         listOfMenuItems.Add(new Items()
                         {
                             ItermId = item.ItemId,
                             ItemName = item.Name,
                             Count = basketItem.Quantity,
-                            Customise = customeInfo,
+                            Customise = customInfo,
                             Iscustomisable = item.Customise                           
                         });
                     }
@@ -100,7 +100,7 @@ namespace SmartKitchenApi.Controllers
         [HttpGet("{get-single-item}")]
         public IActionResult GetSingleItem(string id)
         {          
-            return Ok(MContext.Menu.Where(b => b.ItemId == id).FirstOrDefault());
+            return Ok(MContext.Menu.FirstOrDefault(b => b.ItemId == id));
         }
 
 

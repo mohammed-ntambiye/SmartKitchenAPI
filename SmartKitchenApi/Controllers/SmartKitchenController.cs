@@ -11,7 +11,7 @@ using SmartKitchenApi.Helpers;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class SmartKitchenController : ControllerBase , ISmartKitchenController
+    public class SmartKitchenController : ControllerBase, ISmartKitchenController
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
@@ -26,10 +26,22 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Get()
         {
             return Ok(MContext.KitchenUpdates.ToList());
-           
         }
 
-  
+        [HttpGet("single-update")]
+        public IActionResult SingleUpdate(string id)
+        {
+            var result = MContext.KitchenUpdates.FirstOrDefault(_ => _.OrderId == id);
+            var SingleUpdate = new SmartKitchenModel()
+            {
+                OrderId = result.OrderId,
+                StationNumber = result.StationNumber
+            };
+
+            return Ok(SingleUpdate);
+        }
+
+
         [HttpPost]
         public IActionResult Post([FromBody]SmartKitchenModel value)
         {
@@ -57,8 +69,7 @@ namespace SmartKitchenApi.Controllers
             {
                 MContext.Database.EnsureCreated();
                 var Update = MContext.KitchenUpdates
-                    .Where(b => b.OrderId == value.OrderId)
-                    .FirstOrDefault();
+                    .FirstOrDefault(b => b.OrderId == value.OrderId);
 
                 if (Update == null)
                 {
@@ -83,7 +94,7 @@ namespace SmartKitchenApi.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
-            if (id ==null) return StatusCode(400);
+            if (id == null) return StatusCode(400);
             SmartKitchenModel update = new SmartKitchenModel() { OrderId = id };
             try
             {
@@ -91,7 +102,7 @@ namespace SmartKitchenApi.Controllers
                 MContext.KitchenUpdates.Remove(update);
                 MContext.SaveChanges();
             }
-            catch (SqlException exception )
+            catch (SqlException exception)
             {
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);

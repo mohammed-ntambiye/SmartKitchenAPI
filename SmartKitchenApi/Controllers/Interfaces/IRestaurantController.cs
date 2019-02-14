@@ -15,5 +15,7 @@ namespace SmartKitchenApi.Controllers
         void Put(int id, [FromBody] string value);
 
         IActionResult Delete([FromBody] string id);
+
+        IActionResult SingleUpdate(string orderToTrack);
     }
 }

@@ -44,8 +44,7 @@ namespace SmartKitchenApi.Controllers
                 foreach (var value in Items)
                 {
                     var Item = MContext.Menu
-                          .Where(b => b.ItemId == value.ItemId)
-                          .FirstOrDefault();
+                          .FirstOrDefault(b => b.ItemId == value.ItemId);
 
                     Basket.Add(new BasketModel()
                     {
@@ -99,8 +98,7 @@ namespace SmartKitchenApi.Controllers
             try
             {
                 var Item = MContext.Basket
-                    .Where(b => b.Owner == user && b.BasketId == basketId && b.ItemId == id )
-                    .FirstOrDefault();
+                    .FirstOrDefault(b => b.Owner == user && b.BasketId == basketId && b.ItemId == id);
 
                 if (Item != null)
                 {

@@ -13,7 +13,7 @@ using SmartKitchenApi.Helpers;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class RestaurantOrdersController : ControllerBase, IRestaurantController
+    public class RestaurantOrdersController : ControllerBase
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
@@ -35,7 +35,6 @@ namespace SmartKitchenApi.Controllers
         {
             if (value == null) return StatusCode(400);
             value.TimeStamp = DateTime.Now;
-            value.OrderId = RandomNumberHelper.RandomNumber(1, 1000000).ToString();
             try
             {
                 MContext.Database.EnsureCreated();
@@ -57,14 +56,12 @@ namespace SmartKitchenApi.Controllers
                     MContext.SaveChanges();
 
                     var Item = MContext.Basket
-                        .Where(b => b.Owner == item.Owner  && b.BasketId == item.BasketId && b.ItemId == item.ItemId)
-                        .FirstOrDefault();
+                        .FirstOrDefault(b => b.Owner == item.Owner  && b.BasketId == item.BasketId && b.ItemId == item.ItemId);
                     if (Item != null)
                     {
                         MContext.Basket.Remove(Item);
                         MContext.SaveChanges();
                     }
-
                 }
 
 
@@ -86,11 +83,6 @@ namespace SmartKitchenApi.Controllers
                 return StatusCode(500);
             }
             return Accepted();
-        }
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
         }
 
         // DELETE api/values/5
