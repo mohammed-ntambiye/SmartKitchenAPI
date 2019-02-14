@@ -56,8 +56,7 @@ namespace SmartKitchenApi.Controllers
                             ItemName = item.Name,
                             Count = basketItem.Quantity,
                             Customise = customeInfo,
-                            Iscustomisable = item.Customise
-                            
+                            Iscustomisable = item.Customise                           
                         });
                     }
 
