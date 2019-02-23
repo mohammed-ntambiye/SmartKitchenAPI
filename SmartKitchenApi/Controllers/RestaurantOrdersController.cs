@@ -70,7 +70,7 @@ namespace SmartKitchenApi.Controllers
                 var orderRecieved = new SmartKitchenModel
                 {
                     OrderId = value.OrderId,
-                    StationNumber = "Order recieved"
+                    StationNumber = "Order received"
                 };
 
                 MContext.KitchenUpdates.Add(orderRecieved);
