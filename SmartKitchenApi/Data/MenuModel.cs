@@ -21,6 +21,8 @@ namespace SmartKitchenApi.Data
         [Required] public decimal Price { get; set; }
 
         [Required] public bool Customise { get; set; }
-        
+
+        [Required] public string Type { get; set; }
+
     }
 }

@@ -29,7 +29,7 @@ namespace SmartKitchenApi.Controllers
         {
             return Ok(MContext.RestaurantOrders.ToList());
         }
-
+   
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantOrdersModel value)
         {
@@ -67,13 +67,13 @@ namespace SmartKitchenApi.Controllers
 
                 MContext.RestaurantOrders.Add(value);
                 MContext.SaveChanges();
-                var orderRecieved = new SmartKitchenModel
+                var orderReceived = new SmartKitchenModel
                 {
                     OrderId = value.OrderId,
                     StationNumber = "Order received"
                 };
 
-                MContext.KitchenUpdates.Add(orderRecieved);
+                MContext.KitchenUpdates.Add(orderReceived);
                 MContext.SaveChanges();
 
             }

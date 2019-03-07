@@ -29,10 +29,17 @@ namespace SmartKitchenApi.Controllers
             return Ok(MContext.Menu.ToList());
         }
 
+        // GET: api/Menu/5
+        [HttpGet("filter/{id}")]
+        public IActionResult FilterMenu(string id) { 
+            return Ok(MContext.Menu
+                .Where(b => b.Type == id));
+        }
+
         [HttpGet("get-ordered-items")]
         public IActionResult GetOrderedItems()
         {
-            List<Orders> MenuItem = new List<Orders>();
+            List<Orders> MenuItem = new List<Orders>(); 
             var listOfMenuItems = new List<Items>();
             var Items = MContext.RestaurantOrders.ToList();
 
