@@ -118,8 +118,8 @@ namespace SmartKitchenApi.Controllers
         }
 
 
-        [HttpDelete]
-        public IActionResult Delete([FromBody]string id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(string id)
         {
             if (id == null) return StatusCode(400);
             MenuModel update = new MenuModel() { ItemId = id };
