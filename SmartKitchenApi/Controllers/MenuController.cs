@@ -12,7 +12,7 @@ using SmartKitchenApi.Helpers;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class MenuController : ControllerBase, IMenuController
+    public class MenuController : ControllerBase
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
@@ -111,10 +111,34 @@ namespace SmartKitchenApi.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IActionResult Put(string id, [FromBody]MenuModel value)
         {
-            throw new NotImplementedException();
+            if (value == null) return StatusCode(400);
+            try
+            {
+                MContext.Database.EnsureCreated();
+                var Update = MContext.Menu
+                    .FirstOrDefault(b => b.ItemId == id);
+
+                if (Update != null)
+                {
+                    Update.Customise = value.Customise;
+                    Update.Name = value.Name;
+                    Update.CourseDescription = value.CourseDescription;
+                    Update.Price = value.Price;
+                    Update.Type = value.Type;
+                    Update.ImageFileName = value.ImageFileName;          
+                    MContext.SaveChanges();
+                }
+            }
+            catch (SqlException exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+
+            return Accepted();
         }
 
 
