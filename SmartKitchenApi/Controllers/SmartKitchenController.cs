@@ -11,7 +11,7 @@ using SmartKitchenApi.Helpers;
 namespace SmartKitchenApi.Controllers
 {
     [Route("api/[controller]")]
-    public class SmartKitchenController : ControllerBase, ISmartKitchenController
+    public class SmartKitchenController : ControllerBase
     {
         protected ApplicationDbContext MContext;
         protected IRandomNumberGenerator RandomNumberHelper;
@@ -31,11 +31,17 @@ namespace SmartKitchenApi.Controllers
         [HttpGet("single-update")]
         public IActionResult SingleUpdate(string id)
         {
-            var result = MContext.KitchenUpdates.FirstOrDefault(_ => _.OrderId == id);
+            var result = MContext.KitchenUpdates.FirstOrDefault(_ => _.OrderNumber == id);
+            if (result == null)
+            {
+                return new StatusCodeResult(500);
+            }
             var SingleUpdate = new SmartKitchenModel()
             {
-                OrderId = result.OrderId,
-                StationNumber = result.StationNumber
+                TreyId = result.TreyId,
+                StationId = result.StationId,
+                OrderNumber = result.OrderNumber
+                
             };
 
             return Ok(SingleUpdate);
@@ -60,16 +66,16 @@ namespace SmartKitchenApi.Controllers
 
             return Accepted();
         }
-
         [HttpPut]
         public IActionResult Put([FromBody]SmartKitchenModel value)
         {
             if (value == null) return StatusCode(400);
             try
             {
+                value.TreyId = value.TreyId.Replace("'","").Substring(6);
                 MContext.Database.EnsureCreated();
                 var Update = MContext.KitchenUpdates
-                    .FirstOrDefault(b => b.OrderId == value.OrderId);
+                    .FirstOrDefault(b => b.TreyId == value.TreyId);
 
                 if (Update == null)
                 {
@@ -78,7 +84,7 @@ namespace SmartKitchenApi.Controllers
                 }
                 else
                 {
-                    Update.StationNumber = value.StationNumber;
+                    Update.StationId = value.StationId;
                     MContext.SaveChanges();
                 }
             }
@@ -95,7 +101,7 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Delete([FromBody]string id)
         {
             if (id == null) return StatusCode(400);
-            SmartKitchenModel update = new SmartKitchenModel() { OrderId = id };
+            SmartKitchenModel update = new SmartKitchenModel() { TreyId = id };
             try
             {
                 MContext.KitchenUpdates.Attach(update);

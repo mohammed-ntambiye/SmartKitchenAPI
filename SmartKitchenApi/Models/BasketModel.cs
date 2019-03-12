@@ -22,5 +22,7 @@ namespace SmartKitchenApi.Data
         public decimal Price { get; set; }
 
         public string ImageFileName { get; set; }
+
+        public  string TreyId { get; set; }
     }
 }

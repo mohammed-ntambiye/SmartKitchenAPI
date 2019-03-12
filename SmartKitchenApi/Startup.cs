@@ -29,7 +29,6 @@ namespace SmartKitchenApi
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IRandomNumberGenerator, RandomNumberGenerator>();
-            services.AddScoped<ISmartKitchenController, SmartKitchenController>();
             services.AddMvc();
         }
 
