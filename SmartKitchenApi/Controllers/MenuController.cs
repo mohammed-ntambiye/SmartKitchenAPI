@@ -14,25 +14,25 @@ namespace SmartKitchenApi.Controllers
     [Route("api/[controller]")]
     public class MenuController : ControllerBase
     {
-        protected ApplicationDbContext MContext;
+        protected ApplicationDbContext DbContext;
         protected IRandomNumberGenerator RandomNumberHelper;
 
         public MenuController(ApplicationDbContext context, IRandomNumberGenerator _randomNumberGenerator)
         {
-            MContext = context;
+            DbContext = context;
             RandomNumberHelper = _randomNumberGenerator;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(MContext.Menu.ToList());
+            return Ok(DbContext.Menu.ToList());
         }
 
         // GET: api/Menu/5
         [HttpGet("filter/{id}")]
         public IActionResult FilterMenu(string id) { 
-            return Ok(MContext.Menu
+            return Ok(DbContext.Menu
                 .Where(b => b.Type == id));
         }
 
@@ -41,21 +41,21 @@ namespace SmartKitchenApi.Controllers
         {
             List<Orders> MenuItem = new List<Orders>(); 
             var listOfMenuItems = new List<Items>();
-            var Items = MContext.RestaurantOrders.ToList();
+            var Items = DbContext.RestaurantOrders.ToList();
 
             foreach (var value in Items)
             {
                 listOfMenuItems.Clear();
 
-                var basket = MContext.ConfirmedOrders
+                var basket = DbContext.ConfirmedOrders
                       .Where(b => b.Owner == value.Owner && b.BasketId == value.BasketId && b.OrderId == value.OrderId).ToList();
 
                 foreach (var basketItem in basket)
                 {
                     if (value.BasketId == basketItem.BasketId)
                     {
-                        var item = MContext.Menu.FirstOrDefault(a => a.ItemId == basketItem.ItemId);
-                        var customInfo = MContext.Customise.FirstOrDefault(_ => _.CustomiseId == basketItem.CustomiseId);
+                        var item = DbContext.Menu.FirstOrDefault(a => a.ItemId == basketItem.ItemId);
+                        var customInfo = DbContext.Customise.FirstOrDefault(_ => _.CustomiseId == basketItem.CustomiseId);
 
                         listOfMenuItems.Add(new Items()
                         {
@@ -91,9 +91,9 @@ namespace SmartKitchenApi.Controllers
             value.ItemId = RandomNumberHelper.RandomNumber(10, 200000).ToString();
             try
             {
-                MContext.Database.EnsureCreated();
-                MContext.Menu.Add(value);
-                MContext.SaveChanges();
+                DbContext.Database.EnsureCreated();
+                DbContext.Menu.Add(value);
+                DbContext.SaveChanges();
             }
             catch (SqlException exception)
             {
@@ -107,7 +107,7 @@ namespace SmartKitchenApi.Controllers
         [HttpGet("{get-single-item}")]
         public IActionResult GetSingleItem(string id)
         {          
-            return Ok(MContext.Menu.FirstOrDefault(b => b.ItemId == id));
+            return Ok(DbContext.Menu.FirstOrDefault(b => b.ItemId == id));
         }
 
 
@@ -117,8 +117,8 @@ namespace SmartKitchenApi.Controllers
             if (value == null) return StatusCode(400);
             try
             {
-                MContext.Database.EnsureCreated();
-                var Update = MContext.Menu
+                DbContext.Database.EnsureCreated();
+                var Update = DbContext.Menu
                     .FirstOrDefault(b => b.ItemId == id);
 
                 if (Update != null)
@@ -128,8 +128,8 @@ namespace SmartKitchenApi.Controllers
                     Update.CourseDescription = value.CourseDescription;
                     Update.Price = value.Price;
                     Update.Type = value.Type;
-                    Update.ImageFileName = value.ImageFileName;          
-                    MContext.SaveChanges();
+                    Update.ImageFileName = value.ImageFileName;
+                    DbContext.SaveChanges();
                 }
             }
             catch (SqlException exception)
@@ -149,9 +149,9 @@ namespace SmartKitchenApi.Controllers
             MenuModel update = new MenuModel() { ItemId = id };
             try
             {
-                MContext.Menu.Attach(update);
-                MContext.Menu.Remove(update);
-                MContext.SaveChanges();
+                DbContext.Menu.Attach(update);
+                DbContext.Menu.Remove(update);
+                DbContext.SaveChanges();
             }
             catch (SqlException exception)
             {

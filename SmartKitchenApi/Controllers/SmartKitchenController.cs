@@ -13,38 +13,36 @@ namespace SmartKitchenApi.Controllers
     [Route("api/[controller]")]
     public class SmartKitchenController : ControllerBase
     {
-        protected ApplicationDbContext MContext;
-        protected IRandomNumberGenerator RandomNumberHelper;
+        private readonly ApplicationDbContext _dbContext;
 
-        public SmartKitchenController(ApplicationDbContext _context, IRandomNumberGenerator _randomNumberGenerator)
+        public SmartKitchenController(ApplicationDbContext context, IRandomNumberGenerator randomNumberGenerator)
         {
-            MContext = _context;
-            RandomNumberHelper = _randomNumberGenerator;
+            _dbContext = context;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(MContext.KitchenUpdates.ToList());
+            return Ok(_dbContext.KitchenUpdates.ToList());
         }
 
         [HttpGet("single-update")]
         public IActionResult SingleUpdate(string id)
         {
-            var result = MContext.KitchenUpdates.FirstOrDefault(_ => _.OrderNumber == id);
+            var result = _dbContext.KitchenUpdates.FirstOrDefault(_ => _.OrderNumber == id);
             if (result == null)
             {
                 return new StatusCodeResult(500);
             }
-            var SingleUpdate = new SmartKitchenModel()
+
+            var singleUpdate = new SmartKitchenModel()
             {
                 TreyId = result.TreyId,
                 StationId = result.StationId,
                 OrderNumber = result.OrderNumber
-                
             };
 
-            return Ok(SingleUpdate);
+            return Ok(singleUpdate);
         }
 
 
@@ -54,9 +52,9 @@ namespace SmartKitchenApi.Controllers
             if (value == null) return StatusCode(400);
             try
             {
-                MContext.Database.EnsureCreated();
-                MContext.KitchenUpdates.Add(value);
-                MContext.SaveChanges();
+                _dbContext.Database.EnsureCreated();
+                _dbContext.KitchenUpdates.Add(value);
+                _dbContext.SaveChanges();
             }
             catch (SqlException exception)
             {
@@ -66,6 +64,8 @@ namespace SmartKitchenApi.Controllers
 
             return Accepted();
         }
+
+
         [HttpPut]
         public IActionResult Put([FromBody]SmartKitchenModel value)
         {
@@ -73,19 +73,19 @@ namespace SmartKitchenApi.Controllers
             try
             {
                 value.TreyId = value.TreyId.Replace("'","").Substring(6);
-                MContext.Database.EnsureCreated();
-                var Update = MContext.KitchenUpdates
+                _dbContext.Database.EnsureCreated();
+                var update = _dbContext.KitchenUpdates
                     .FirstOrDefault(b => b.TreyId == value.TreyId);
 
-                if (Update == null)
+                if (update == null)
                 {
-                    MContext.KitchenUpdates.Add(value);
-                    MContext.SaveChanges();
+                    _dbContext.KitchenUpdates.Add(value);
+                    _dbContext.SaveChanges();
                 }
                 else
                 {
-                    Update.StationId = value.StationId;
-                    MContext.SaveChanges();
+                    update.StationId = value.StationId;
+                    _dbContext.SaveChanges();
                 }
             }
             catch (SqlException exception)
@@ -93,20 +93,20 @@ namespace SmartKitchenApi.Controllers
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }
-
             return Accepted();
         }
+
 
         [HttpDelete]
         public IActionResult Delete([FromBody]string id)
         {
             if (id == null) return StatusCode(400);
-            SmartKitchenModel update = new SmartKitchenModel() { TreyId = id };
+            var update = new SmartKitchenModel() { TreyId = id };
             try
             {
-                MContext.KitchenUpdates.Attach(update);
-                MContext.KitchenUpdates.Remove(update);
-                MContext.SaveChanges();
+                _dbContext.KitchenUpdates.Attach(update);
+                _dbContext.KitchenUpdates.Remove(update);
+                _dbContext.SaveChanges();
             }
             catch (SqlException exception)
             {

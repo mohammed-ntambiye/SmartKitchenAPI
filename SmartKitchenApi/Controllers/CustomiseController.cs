@@ -14,39 +14,38 @@ namespace SmartKitchenApi.Controllers
     [Route("api/Customise")]
     public class CustomiseController : Controller
     {
-        protected ApplicationDbContext MContext;
-        protected IRandomNumberGenerator RandomNumberHelper;
-        public CustomiseController(ApplicationDbContext context, IRandomNumberGenerator _randomNumberGenerator)
+        private readonly ApplicationDbContext _dbContext;
+        public CustomiseController(ApplicationDbContext context)
         {
-            MContext = context;
+            _dbContext = context;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(MContext.Customise.ToList());
+            return Ok(_dbContext.Customise.ToList());
         }
 
-        // GET: api/Customise/5
-        [HttpGet("{id}", Name = "Get")]
+
+        [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-           var data = MContext.Customise
+           var data = _dbContext.Customise
                 .Where(b => b.CustomiseId == id);
 
            return Ok(data);
         }
 
-        // POST: api/Customise
+
         [HttpPost]
         public IActionResult Post([FromBody]CustomiseData value)
         {
             if (value == null) return StatusCode(400);
             try
             {
-                MContext.Database.EnsureCreated();
-                MContext.Customise.Add(value);
-                MContext.SaveChanges();
+                _dbContext.Database.EnsureCreated();
+                _dbContext.Customise.Add(value);
+                _dbContext.SaveChanges();
             }
             catch (SqlException exception)
             {
@@ -56,15 +55,9 @@ namespace SmartKitchenApi.Controllers
             return Accepted();
         }
 
-        // PUT: api/Customise/5
+   
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
         {
         }
     }
