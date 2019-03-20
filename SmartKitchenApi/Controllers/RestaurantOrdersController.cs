@@ -12,6 +12,7 @@ using SmartKitchenApi.Helpers;
 
 namespace SmartKitchenApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class RestaurantOrdersController : ControllerBase
     {

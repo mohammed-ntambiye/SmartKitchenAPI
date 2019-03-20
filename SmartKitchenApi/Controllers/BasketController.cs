@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartKitchenApi.Data;
@@ -11,7 +12,6 @@ using SmartKitchenApi.Models;
 
 namespace SmartKitchenApi.Controllers
 {
-    //[Produces("application/json")]
     [Route("api/Basket")]
     public class BasketController : Controller
     {
