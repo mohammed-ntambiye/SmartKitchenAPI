@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SmartKitchenApi;
@@ -10,6 +11,7 @@ using SmartKitchenApi.Helpers;
 
 namespace SmartKitchenApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class SmartKitchenController : ControllerBase
     {

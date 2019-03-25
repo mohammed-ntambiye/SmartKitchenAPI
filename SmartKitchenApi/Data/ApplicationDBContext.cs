@@ -12,6 +12,7 @@ namespace SmartKitchenApi
         public DbSet<BasketData> Basket { get; set; }
         public DbSet<CustomiseData> Customise { get; set; }
         public DbSet<ConfirmedOrders> ConfirmedOrders { get; set; }
+        public DbSet<Stats> Stats { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {

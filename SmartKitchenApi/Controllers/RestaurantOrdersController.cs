@@ -53,7 +53,19 @@ namespace SmartKitchenApi.Controllers
                         OrderId = value.OrderId
 
                     };
+
+                    var stat = new Stats()
+                    {
+                        ItemId = itemToAdd.ItemId,
+                        Quantity = itemToAdd.Quantity,
+                        Timestamp = DateTime.Now
+                    };
+
                     MContext.ConfirmedOrders.Add(itemToAdd);
+                    MContext.Stats.Add(stat);
+
+                 
+           
                     MContext.SaveChanges();
 
                     var Item = MContext.Basket

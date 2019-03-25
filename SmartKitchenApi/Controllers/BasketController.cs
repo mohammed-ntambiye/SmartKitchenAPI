@@ -12,6 +12,7 @@ using SmartKitchenApi.Models;
 
 namespace SmartKitchenApi.Controllers
 {
+    [Authorize]
     [Route("api/Basket")]
     public class BasketController : Controller
     {
