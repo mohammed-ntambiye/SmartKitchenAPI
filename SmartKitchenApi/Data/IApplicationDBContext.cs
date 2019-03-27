@@ -9,7 +9,7 @@ namespace SmartKitchenApi.Data
     interface IApplicationDBContext
     {
          DbSet<RestaurantOrdersModel> RestaurantOrders { get; set; }
-         DbSet<SmartKitchenModel> KitchenUpdates { get; set; }
+         DbSet<UpdateModel> KitchenUpdates { get; set; }
          DbSet<MenuModel> Menu { get; set; }
 
     }

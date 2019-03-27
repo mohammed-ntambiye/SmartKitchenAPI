@@ -7,7 +7,7 @@ namespace SmartKitchenApi
     public class ApplicationDbContext: DbContext, IApplicationDBContext
     {
         public DbSet<RestaurantOrdersModel> RestaurantOrders { get; set; }
-        public DbSet<SmartKitchenModel> KitchenUpdates { get; set; }
+        public DbSet<UpdateModel> KitchenUpdates { get; set; }
         public DbSet<MenuModel> Menu { get; set; }
         public DbSet<BasketData> Basket { get; set; }
         public DbSet<CustomiseData> Customise { get; set; }

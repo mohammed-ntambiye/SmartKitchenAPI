@@ -37,10 +37,10 @@ namespace SmartKitchenApi.Controllers
                 return new StatusCodeResult(500);
             }
 
-            var singleUpdate = new SmartKitchenModel()
+            var singleUpdate = new UpdateModel()
             {
                 TreyId = result.TreyId,
-                StationId = result.StationId,
+                StationCount = result.StationCount,
                 OrderNumber = result.OrderNumber
             };
 
@@ -49,7 +49,7 @@ namespace SmartKitchenApi.Controllers
 
 
         [HttpPost]
-        public IActionResult Post([FromBody]SmartKitchenModel value)
+        public IActionResult Post([FromBody]UpdateModel value)
         {
             if (value == null) return StatusCode(400);
             try
@@ -69,7 +69,7 @@ namespace SmartKitchenApi.Controllers
 
 
         [HttpPut]
-        public IActionResult Put([FromBody]SmartKitchenModel value)
+        public IActionResult Put([FromBody]UpdateModel value)
         {
             if (value == null) return StatusCode(400);
             try
@@ -79,14 +79,9 @@ namespace SmartKitchenApi.Controllers
                 var update = _dbContext.KitchenUpdates
                     .FirstOrDefault(b => b.TreyId == value.TreyId);
 
-                if (update == null)
+                if (update != null)
                 {
-                    _dbContext.KitchenUpdates.Add(value);
-                    _dbContext.SaveChanges();
-                }
-                else
-                {
-                    update.StationId = value.StationId;
+                    update.StationCount += value.StationCount;
                     _dbContext.SaveChanges();
                 }
             }
@@ -103,7 +98,7 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Delete([FromBody]string id)
         {
             if (id == null) return StatusCode(400);
-            var update = new SmartKitchenModel() { TreyId = id };
+            var update = new UpdateModel() { TreyId = id };
             try
             {
                 _dbContext.KitchenUpdates.Attach(update);

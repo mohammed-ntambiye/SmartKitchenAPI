@@ -80,10 +80,10 @@ namespace SmartKitchenApi.Controllers
 
                 MContext.RestaurantOrders.Add(value);
                 MContext.SaveChanges();
-                var orderReceived = new SmartKitchenModel
+                var orderReceived = new UpdateModel
                 {
                     TreyId = value.TreyId,
-                    StationId= "Order received",
+                    StationCount = 1,
                     OrderNumber = value.OrderId
                     
                 };

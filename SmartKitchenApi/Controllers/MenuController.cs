@@ -41,7 +41,7 @@ namespace SmartKitchenApi.Controllers
         [HttpGet("get-ordered-items")]
         public IActionResult GetOrderedItems()
         {
-            List<Orders> MenuItem = new List<Orders>(); 
+            var MenuItem = new List<Orders>(); 
             var listOfMenuItems = new List<Items>();
             var Items = DbContext.RestaurantOrders.ToList();
 
@@ -70,18 +70,21 @@ namespace SmartKitchenApi.Controllers
                     }
 
                 }
-
+                
                 MenuItem.Add(new Orders()
                 {
                     TimeStamp = value.TimeStamp,
                     OrderId = value.OrderId,
                     Extras = value.Extras,
                     Items = new List<Items>( listOfMenuItems),
-                    TableNumber = value.TableNumber   
+                    TableNumber = value.TableNumber ,
+                    TreyId = value.TreyId.Substring(value.TreyId.Length - 12)
+                                        
                 });
+               
             }
-
-            List<Orders> SortedList = MenuItem.OrderBy(o => o.TimeStamp).ToList();
+            
+            var SortedList = MenuItem.OrderBy(o => o.TimeStamp).ToList();      
             return Ok(SortedList);
         }
 

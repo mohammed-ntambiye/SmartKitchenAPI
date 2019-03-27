@@ -19,6 +19,8 @@ namespace SmartKitchenApi.Models
 
         [Required] [MaxLength(255)] public string Owner { get; set; }
 
+        [Required] [MaxLength(255)] public string TreyId { get; set; }
+
         public DateTime TimeStamp { get; set; }
 
         [MaxLength(255)] public string Extras { get; set; }
