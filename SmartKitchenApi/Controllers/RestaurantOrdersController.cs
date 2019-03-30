@@ -103,15 +103,22 @@ namespace SmartKitchenApi.Controllers
         {
             var order = new Orders();
             var listOfMenuItems = new List<Items>();
-            var Items = DBContext.RestaurantOrders.FirstOrDefault(b => b.OrderId == orderNumber);
+            var orderConfirmation = DBContext.RestaurantOrders.FirstOrDefault(b => b.OrderId == orderNumber);
+
+            if (orderConfirmation == null)
+                return BadRequest();
 
             var basket = DBContext.ConfirmedOrders
-                .Where(b => b.Owner == Items.Owner && b.BasketId == Items.BasketId && b.OrderId == orderNumber).ToList();
+                .Where(b => b.Owner == orderConfirmation.Owner && b.BasketId == orderConfirmation.BasketId && b.OrderId == orderNumber).ToList();
 
             foreach (var basketItem in basket)
             {
-                if (Items.BasketId != basketItem.BasketId) continue;
+                if (orderConfirmation.BasketId != basketItem.BasketId) continue;
                 var item = DBContext.Menu.FirstOrDefault(a => a.ItemId == basketItem.ItemId);
+
+                if (item == null)
+                    return BadRequest();
+
                 var customInfo = DBContext.Customise.FirstOrDefault(_ => _.CustomiseId == basketItem.CustomiseId);
 
                 listOfMenuItems.Add(new Items()
@@ -124,12 +131,12 @@ namespace SmartKitchenApi.Controllers
                 });
             }
 
-            order.TimeStamp = Items.TimeStamp;
-            order.OrderId = Items.OrderId;
-            order.Extras = Items.Extras;
+            order.TimeStamp = orderConfirmation.TimeStamp;
+            order.OrderId = orderConfirmation.OrderId;
+            order.Extras = orderConfirmation.Extras;
             order.Items = new List<Items>(listOfMenuItems);
-            order.TableNumber = Items.TableNumber;
-            order.TreyId = Items.TreyId.Substring(Items.TreyId.Length - 12);     
+            order.TableNumber = orderConfirmation.TableNumber;
+            order.TreyId = orderConfirmation.TreyId.Substring(orderConfirmation.TreyId.Length - 12);
             return Ok(order);
         }
 
@@ -139,7 +146,7 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Delete([FromBody]string id)
         {
             if (id == null) return StatusCode(400);
-            RestaurantOrdersModel update = new RestaurantOrdersModel() { OrderId = id };
+            var update = new RestaurantOrdersModel() { OrderId = id };
             try
             {
                 DBContext.RestaurantOrders.Attach(update);
