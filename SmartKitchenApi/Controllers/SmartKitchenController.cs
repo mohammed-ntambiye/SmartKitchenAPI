@@ -79,7 +79,7 @@ namespace SmartKitchenApi.Controllers
                 var update = _dbContext.KitchenUpdates
                     .FirstOrDefault(b => b.TreyId == value.TreyId);
 
-                if (update != null && update.StationCount < 4)
+                if (update != null && update.StationCount <4)
                 {
                     update.StationCount += value.StationCount;
                     _dbContext.SaveChanges();
