@@ -77,8 +77,8 @@ namespace SmartKitchenApi.Controllers
                     Extras = value.Extras,
                     Items = new List<Items>( listOfMenuItems),
                     TableNumber = value.TableNumber ,
-                    TreyId = value.TreyId.Substring(value.TreyId.Length - 12)
-                                        
+                    TreyId = value.TreyId.Substring(value.TreyId.Length - 12),
+                    Modifications =value.Modifications                                        
                 });
                
             }

@@ -17,7 +17,7 @@ namespace SmartKitchenApi.Controllers
     [Route("api/[controller]")]
     public class RestaurantOrdersController : ControllerBase
     {
-        protected ApplicationDbContext DBContext;
+        private readonly ApplicationDbContext DBContext;
         protected IRandomNumberGenerator RandomNumberHelper;
         // GET api/values
         public RestaurantOrdersController(ApplicationDbContext _context, IRandomNumberGenerator _randomNumberGenerator)
@@ -29,6 +29,16 @@ namespace SmartKitchenApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            return Ok(DBContext.RestaurantOrders.ToList());
+        }
+
+        [HttpPost("{toggle-modifications}")]
+        public IActionResult Get([FromBody]RestaurantOrdersModel model)
+        {
+            var order = DBContext.RestaurantOrders.FirstOrDefault(_ => _.OrderId == model.OrderId);
+            order.Modifications = model.Modifications;
+            DBContext.SaveChanges();
+
             return Ok(DBContext.RestaurantOrders.ToList());
         }
 
@@ -136,17 +146,16 @@ namespace SmartKitchenApi.Controllers
             order.Extras = orderConfirmation.Extras;
             order.Items = new List<Items>(listOfMenuItems);
             order.TableNumber = orderConfirmation.TableNumber;
+            order.Modifications = orderConfirmation.Modifications;
             order.TreyId = orderConfirmation.TreyId.Substring(orderConfirmation.TreyId.Length - 12);
             return Ok(order);
         }
 
-
-        // DELETE api/values/5
-        [HttpDelete]
-        public IActionResult Delete([FromBody]string id)
+        [HttpDelete("{orderId}")]
+        public IActionResult Delete(string orderId)
         {
-            if (id == null) return StatusCode(400);
-            var update = new RestaurantOrdersModel() { OrderId = id };
+            if (orderId == null) return StatusCode(400);
+            var update = new RestaurantOrdersModel() { OrderId = orderId };
             try
             {
                 DBContext.RestaurantOrders.Attach(update);
