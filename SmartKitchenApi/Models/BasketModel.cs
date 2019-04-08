@@ -24,5 +24,7 @@ namespace SmartKitchenApi.Data
         public string ImageFileName { get; set; }
 
         public  string TreyId { get; set; }
+
+        public  string OrderNumber { get; set; }
     }
 }

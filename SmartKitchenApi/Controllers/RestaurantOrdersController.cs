@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,42 @@ namespace SmartKitchenApi.Controllers
         public IActionResult Get()
         {
             return Ok(DBContext.RestaurantOrders.ToList());
+        }
+
+
+        [HttpGet("{orderNumber}")]
+        public IActionResult Get(string orderNumber)
+        {
+           var confirmedOrders = DBContext.ConfirmedOrders.Where(_ => _.OrderId == orderNumber).ToList();
+           var basket = new List<BasketModel>();
+
+            try
+           {
+               foreach (var value in confirmedOrders)
+               {
+                   var item = DBContext.Menu
+                       .FirstOrDefault(b => b.ItemId == value.ItemId);
+
+                   basket.Add(new BasketModel()
+                   {
+                       ImageFileName = item.ImageFileName,
+                       Price = item.Price,
+                       ItemName = item.Name,
+                       Quantity = value.Quantity,
+                       Owner = value.Owner,
+                       ItemId = item.ItemId,
+                       BasketId = value.BasketId,
+                       OrderNumber = value.OrderId
+                   });
+               }
+           }
+           catch (SqlException exception)
+           {
+               Console.WriteLine(exception.ToString());
+               return StatusCode(500);
+           }
+         
+            return Ok(basket);
         }
 
         [HttpPost("{toggle-modifications}")]
@@ -78,13 +115,10 @@ namespace SmartKitchenApi.Controllers
 
                     var Item = DBContext.Basket
                         .FirstOrDefault(b => b.Owner == item.Owner && b.BasketId == item.BasketId && b.ItemId == item.ItemId);
-                    if (Item != null)
-                    {
-                        DBContext.Basket.Remove(Item);
-                        DBContext.SaveChanges();
-                    }
+                    if (Item == null) continue;
+                    DBContext.Basket.Remove(Item);
+                    DBContext.SaveChanges();
                 }
-
 
                 DBContext.RestaurantOrders.Add(value);
                 DBContext.SaveChanges();
@@ -93,12 +127,10 @@ namespace SmartKitchenApi.Controllers
                     TreyId = value.TreyId,
                     StationCount = 1,
                     OrderNumber = value.OrderId
-
                 };
 
                 DBContext.KitchenUpdates.Add(orderReceived);
                 DBContext.SaveChanges();
-
             }
             catch (Exception exception)
             {
@@ -148,6 +180,7 @@ namespace SmartKitchenApi.Controllers
             order.TableNumber = orderConfirmation.TableNumber;
             order.Modifications = orderConfirmation.Modifications;
             order.TreyId = orderConfirmation.TreyId.Substring(orderConfirmation.TreyId.Length - 12);
+            order.Owner = orderConfirmation.Owner;
             return Ok(order);
         }
 
@@ -167,9 +200,27 @@ namespace SmartKitchenApi.Controllers
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }
-
             return Ok();
+        }
 
+        [HttpDelete("{orderId}/{itemId}")]
+        public IActionResult Delete(string orderId,string itemId)
+        {
+            if (orderId == null) return StatusCode(400);       
+            var order = DBContext.ConfirmedOrders.FirstOrDefault(_ => _.OrderId == orderId && _.ItemId == itemId);
+            if (order == null)
+                return BadRequest();
+            try
+            {
+                DBContext.ConfirmedOrders.Remove(order);
+                DBContext.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+            return Ok();
         }
     }
 }
