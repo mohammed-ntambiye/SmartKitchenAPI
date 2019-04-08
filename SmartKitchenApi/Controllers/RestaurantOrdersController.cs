@@ -37,35 +37,34 @@ namespace SmartKitchenApi.Controllers
         [HttpGet("{orderNumber}")]
         public IActionResult Get(string orderNumber)
         {
-           var confirmedOrders = DBContext.ConfirmedOrders.Where(_ => _.OrderId == orderNumber).ToList();
-           var basket = new List<BasketModel>();
-
+            var confirmedOrders = DBContext.ConfirmedOrders.Where(_ => _.OrderId == orderNumber).ToList();
+            var basket = new List<BasketModel>();
             try
-           {
-               foreach (var value in confirmedOrders)
-               {
-                   var item = DBContext.Menu
-                       .FirstOrDefault(b => b.ItemId == value.ItemId);
+            {
+                foreach (var value in confirmedOrders)
+                {
+                    var item = DBContext.Menu
+                        .FirstOrDefault(b => b.ItemId == value.ItemId);
 
-                   basket.Add(new BasketModel()
-                   {
-                       ImageFileName = item.ImageFileName,
-                       Price = item.Price,
-                       ItemName = item.Name,
-                       Quantity = value.Quantity,
-                       Owner = value.Owner,
-                       ItemId = item.ItemId,
-                       BasketId = value.BasketId,
-                       OrderNumber = value.OrderId
-                   });
-               }
-           }
-           catch (SqlException exception)
-           {
-               Console.WriteLine(exception.ToString());
-               return StatusCode(500);
-           }
-         
+                    basket.Add(new BasketModel()
+                    {
+                        ImageFileName = item.ImageFileName,
+                        Price = item.Price,
+                        ItemName = item.Name,
+                        Quantity = value.Quantity,
+                        Owner = value.Owner,
+                        ItemId = item.ItemId,
+                        BasketId = value.BasketId,
+                        OrderNumber = value.OrderId
+                    });
+                }
+            }
+            catch (SqlException exception)
+            {
+                Console.WriteLine(exception.ToString());
+                return StatusCode(500);
+            }
+
             return Ok(basket);
         }
 
@@ -204,9 +203,9 @@ namespace SmartKitchenApi.Controllers
         }
 
         [HttpDelete("{orderId}/{itemId}")]
-        public IActionResult Delete(string orderId,string itemId)
+        public IActionResult Delete(string orderId, string itemId)
         {
-            if (orderId == null) return StatusCode(400);       
+            if (orderId == null) return StatusCode(400);
             var order = DBContext.ConfirmedOrders.FirstOrDefault(_ => _.OrderId == orderId && _.ItemId == itemId);
             if (order == null)
                 return BadRequest();
