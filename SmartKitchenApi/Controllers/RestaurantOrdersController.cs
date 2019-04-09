@@ -150,7 +150,9 @@ namespace SmartKitchenApi.Controllers
                 return BadRequest();
 
             var basket = DBContext.ConfirmedOrders
-                .Where(b => b.Owner == orderConfirmation.Owner && b.BasketId == orderConfirmation.BasketId && b.OrderId == orderNumber).ToList();
+                .Where(b => b.Owner == orderConfirmation.Owner 
+                            && b.BasketId == orderConfirmation.BasketId
+                            && b.OrderId == orderNumber).ToList();
 
             foreach (var basketItem in basket)
             {
@@ -172,15 +174,22 @@ namespace SmartKitchenApi.Controllers
                 });
             }
 
+            MatchOrderInformation(orderConfirmation,order);      
+            order.Items = new List<Items>(listOfMenuItems);          
+            return Ok(order);
+        }
+
+
+        public Orders MatchOrderInformation(RestaurantOrdersModel orderConfirmation, Orders order)
+        {
             order.TimeStamp = orderConfirmation.TimeStamp;
             order.OrderId = orderConfirmation.OrderId;
             order.Extras = orderConfirmation.Extras;
-            order.Items = new List<Items>(listOfMenuItems);
             order.TableNumber = orderConfirmation.TableNumber;
             order.Modifications = orderConfirmation.Modifications;
             order.TreyId = orderConfirmation.TreyId.Substring(orderConfirmation.TreyId.Length - 12);
             order.Owner = orderConfirmation.Owner;
-            return Ok(order);
+            return order;
         }
 
         [HttpDelete("{orderId}")]
