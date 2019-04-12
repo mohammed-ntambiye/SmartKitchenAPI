@@ -71,22 +71,28 @@ namespace SmartKitchenApi.Controllers
         [HttpPut]
         public IActionResult Put([FromBody]UpdateModel value)
         {
+            //Return bad request if value is null
             if (value == null) return StatusCode(400);
             try
             {
+                //Remove unnecessary quotes 
                 value.TreyId = value.TreyId.Replace("'","").Substring(6);
                 _dbContext.Database.EnsureCreated();
+                //Check if  tray id provided matches an order 
                 var update = _dbContext.KitchenUpdates
                     .FirstOrDefault(b => b.TreyId == value.TreyId);
 
+                //if station exists and station count doesn't exceed the set limit
                 if (update != null && update.StationCount <4)
                 {
+                    //Update station
                     update.StationCount += value.StationCount;
                     _dbContext.SaveChanges();
                 }
             }
             catch (SqlException exception)
             {
+                //Log errors 
                 Console.WriteLine(exception.ToString());
                 return StatusCode(500);
             }

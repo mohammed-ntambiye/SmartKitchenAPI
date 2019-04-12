@@ -142,28 +142,29 @@ namespace SmartKitchenApi.Controllers
         [HttpGet("single-order/{orderNumber}")]
         public IActionResult GetSingleOrder(string orderNumber)
         {
+            // Variables of Orders,  a list of menu Items
             var order = new Orders();
             var listOfMenuItems = new List<Items>();
+            
+            //Retrieves all ordered items from the RestaurantOrders Table
             var orderConfirmation = DBContext.RestaurantOrders.FirstOrDefault(b => b.OrderId == orderNumber);
-
+            //Check for null exceptions 
             if (orderConfirmation == null)
                 return BadRequest();
-
+            //Follows the the basketId and OrderId references to the ConfirmedOrders Table
             var basket = DBContext.ConfirmedOrders
                 .Where(b => b.Owner == orderConfirmation.Owner 
                             && b.BasketId == orderConfirmation.BasketId
                             && b.OrderId == orderNumber).ToList();
-
+            //Loops through the matched confirmed order, retrieves the items from Menu Table and Customization table
             foreach (var basketItem in basket)
             {
                 if (orderConfirmation.BasketId != basketItem.BasketId) continue;
                 var item = DBContext.Menu.FirstOrDefault(a => a.ItemId == basketItem.ItemId);
-
                 if (item == null)
                     return BadRequest();
 
                 var customInfo = DBContext.Customise.FirstOrDefault(_ => _.CustomiseId == basketItem.CustomiseId);
-
                 listOfMenuItems.Add(new Items()
                 {
                     ItermId = item.ItemId,
@@ -173,9 +174,9 @@ namespace SmartKitchenApi.Controllers
                     Iscustomisable = item.Customise
                 });
             }
-
-            MatchOrderInformation(orderConfirmation,order);      
-            order.Items = new List<Items>(listOfMenuItems);          
+            MatchOrderInformation(orderConfirmation,order);  
+            order.Items = new List<Items>(listOfMenuItems);  
+            //Return all orders
             return Ok(order);
         }
 
